@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/">
+        <file>icon/app/pxmCursor.png</file>
+        <file>icon/app/pxmSelect.png</file>
+        <file>icon/target/air.png</file>
+    </qresource>
+</RCC>
