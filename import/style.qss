@@ -1,0 +1,252 @@
+QMainWindow
+{
+    background-color: black;
+    border-width: 2px;
+    border-style: solid;
+    border-color: grey;
+}
+
+
+QDialog
+{
+    background-color: black;
+    border-width: 2px;
+    border-style: solid;
+    border-color: grey;
+}
+
+QFrame
+{
+    background-color: black;
+    border-width: 1px;
+    border-style: solid;
+    border-color: grey;
+}
+
+QGraphicsView
+{
+    background-color: black;
+    border-width: 0px;
+    border-style: solid;
+    border-color: grey;
+}
+
+QGroupBox
+{
+    background-color: black;
+    border-width: 1px;
+    border-style: solid;
+    border-color: grey;
+    color: white;
+    border-radius: 5px;
+    margin-top: 10px;
+    padding:  3px;
+}
+
+QGroupBox::title
+{
+    subcontrol-origin: margin;
+    subcontrol-position: top center;
+    padding: 0 5px
+}
+
+QComboBox
+{
+    background-color: black;
+    border-width: 1px;
+    border-style: solid;
+    border-color: grey;
+    color: white;
+    selection-color: lightgray;
+    selection-background-color: lightgray;
+}
+
+QComboBox QAbstractItemView
+{
+    border: 2px solid darkgray;
+    selection-background-color: lightgray;
+    background-color: black;
+    color: white;
+}
+
+QTabWidget
+{
+    background-color: black;
+}
+
+QTabWidget::tab-bar
+{
+    left: 5px;
+}
+
+QTabWidget::pane
+{
+    border: 1px solid grey;
+}
+
+QTabBar::tab
+{
+     background: grey;
+     border: 1px solid grey;
+     border-bottom-color: grey;
+     border-top-left-radius: 4px;
+     border-top-right-radius: 4px;
+     padding: 2px;
+     color:white;
+}
+
+QTabBar::tab:!selected
+{
+     margin-top: 4px;
+     background: black;
+}
+
+QLabel
+{
+    background-color: black;
+    border-width: 1px;
+    border-style: solid;
+    border-color: rgb(0,180,0);
+    color: rgb(255,255,255);
+}
+
+
+QCheckBox
+{
+    border-width: 1px;
+    border-style: solid;
+    border-color: rgb(0,180,0);
+    color: rgb(0,180,0);
+}
+
+QCheckBox:!enabled
+{
+    border-width: 1px;
+    border-style: solid;
+    border-color: rgb(0,180,0);
+    color: white
+}
+
+
+
+QRadioButton
+{
+    border-width: 1px;
+    border-style: solid;
+    border-color: rgb(0,180,0);
+    color: rgb(0,180,0);
+}
+
+QRadioButton::indicator::checked { color: black; }
+
+
+
+QPushButton
+{
+    background-color: black;
+    border-width: 2px;
+    border-style: outset;
+    border-color: rgb(0,180,0);
+    color: white;
+    border-radius: 2px;
+    outline: 0px;
+    padding: 2px;
+}
+
+QPushButton:hover
+{
+    color: #6F6;
+    background-color: qlineargradient( x1: 0, y1: 0, x2: 0, y2: 1,stop: 0 #353, stop: 1 #575);
+    font: bold;
+}
+
+QPushButton:pressed
+{
+    border-style: inset;
+    background: qradialgradient(cx: 0.4, cy: -0.1, fx: 0.4, fy: -0.1,radius:  0.81, stop: 0 #fff, stop: 1 #00b400);
+}
+
+QPushButton:checked
+{
+    border-style: inset;
+    color: black;
+    background: qradialgradient(cx: 0.4, cy: -0.1, fx: 0.4, fy: -0.1,radius:  0.81, stop: 0 #fff, stop: 1 #00b400);
+}
+
+QTableWidget
+{
+    background-color: black;
+    background: black;
+    border-width: 2px;
+    color: white;
+    border-style: solid;
+    border-color: grey;
+    gridline-color: green;
+    selection-background-color:  rgba(60, 60,60, 255);
+    outline: 0px;
+}
+
+QTableView
+{
+    background-color: black;
+    background: black;
+    border-width: 2px;
+    color: white;
+    border-style: solid;
+    border-color: grey;
+    gridline-color: green;
+    selection-background-color:  rgba(60, 60,60, 255);
+    outline: 0px;
+}
+
+QHeaderView{  background-color: black; }
+
+QHeaderView::section
+{
+    background-color: rgba(0, 180,0, 80);
+    color: white;
+    padding-left: 4px;
+    border: 1px solid green;
+    padding: 4px;
+}
+
+QTableWidget QTableCornerButton::section
+{
+    background-color: black;
+    border: 1px outset black;
+}
+
+QTreeWidget
+{
+    background-color: black;
+    background: black;
+    border-width: 2px;
+    color: white;
+    border-style: solid;
+    border-color: grey;
+    gridline-color: green;
+    selection-background-color:  rgba(60, 60,60, 255);
+    outline: 0px;
+}
+
+QTextEdit
+{
+    background-color: black;
+    border-width: 1px;
+    border-style: solid;
+    border-color: rgb(0,180,0);
+    color: rgb(255,255,255);
+}
+
+QSplitter::handle
+{
+    background : rgb(0,180,0);
+    height: 10px;
+    border-radius: 2px;
+}
+QSplitterHandle::hover{}
+
+QSplitter::handle:horizontal:hover
+{
+    background-color:red;
+}
