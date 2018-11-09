@@ -3,6 +3,7 @@ TEMPLATE = subdirs
 
 SUBDIRS += \
     src/MyLib/RTL_SDR_RadarLib \
-    src/MyApp/RadarApp
+    src/MyApp/RadarApp \
+    tests/MyLibTest/TestReciver
 
 CONFIG += ordered

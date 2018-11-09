@@ -6,6 +6,7 @@ SUBDIRS += \
     MapLib \
     PoolObject \
     GraphicsWidget \
-    Logger
+    Logger \
+    RTL_SDR_Reciver
 
 CONFIG += ordered
