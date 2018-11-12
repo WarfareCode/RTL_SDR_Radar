@@ -35,16 +35,23 @@ void RTL_SDR_Reciver::closeDevice()
 
 QVector<uint8_t> RTL_SDR_Reciver::getDataBlock(size_t size)
 {
-    if (size < (size_t)_data.size())
+    if ((size_t)_data.size() < size)
         _data.resize(size);
 
+    int n_read = 0;
+    rtlsdr_read_sync(_dev, _data.data(), size, &n_read);
+
+    qDebug()<<"getDataBlock() -> n_read = "<< n_read;
     return _data;
 }
 
 const uint8_t *RTL_SDR_Reciver::getDataBlockPtr(size_t size)
 {
-    if (size < (size_t)_data.size())
+    if ((size_t)_data.size() < size)
         _data.resize(size);
+
+    int n_read = 0;
+    rtlsdr_read_sync(_dev, _data.data(), size, &n_read);
 
     return _data.data();
 }
@@ -112,11 +119,15 @@ bool RTL_SDR_Reciver::initDevice()
 
     rtlsdr_set_center_freq(_dev,_freq);
     qDebug()<<"Current freq is :"<< _freq / 1.0e6<< "MHz";
+
     rtlsdr_set_sample_rate(_dev, MODES_DEFAULT_RATE);
-    rtlsdr_reset_buffer(_dev);
 
     qDebug()<<"Gain reported by device:" <<
               rtlsdr_get_tuner_gain(_dev) / 10.0;
+
+    rtlsdr_reset_buffer(_dev);
+
+
     return true;
 }
 
