@@ -11,7 +11,7 @@ MainWindow::MainWindow(QWidget *parent) :
     _reciver->openDevice();
 
     _series = new QLineSeries();
-
+    _series->setUseOpenGL(true);
     _chart = new QtCharts::QChart();
     _chart->addSeries(_series);
     _chart->setTitle("Zoom in/out example");
@@ -20,7 +20,7 @@ MainWindow::MainWindow(QWidget *parent) :
     _chart->createDefaultAxes();
 
     _chartView = new QChartView(_chart);
-    //_chartView->setRenderHint(QPainter::Antialiasing);
+    _chartView->setRenderHint(QPainter::Antialiasing);
 
     setCentralWidget(_chartView);
     resize(800, 600);
@@ -28,12 +28,12 @@ MainWindow::MainWindow(QWidget *parent) :
     grabGesture(Qt::PinchGesture);
 
     connect(&_timer,SIGNAL(timeout()),this,SLOT(timeout()));
-    _timer.start(2000);
+    _timer.start(10);
 
-     QLineSeries *series = dynamic_cast<QLineSeries*>(_chart->series().first());
-    _chart->axisX(series)->setMax((int)MODES_DATA_LEN/16);
-    _chart->axisY(series)->setMax(200);
-    _chart->axisY(series)->setMin(170);
+    QLineSeries *series = dynamic_cast<QLineSeries*>(_chart->series().first());
+    _chart->axisX(series)->setMax(8192);
+    _chart->axisY(series)->setMax(180);
+    _chart->axisY(series)->setMin(-10);
 }
 
 MainWindow::~MainWindow()
@@ -51,7 +51,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::timeout()
 {
-    QVector<uint8_t> dataVector = _reciver->getDataBlock(MODES_DATA_LEN);
+    QVector<uint8_t> dataVector = _reciver->getDataBlock(8192*2);
 
     if(_chart->series().isEmpty())
         return;
@@ -59,19 +59,21 @@ void MainWindow::timeout()
     QLineSeries *series = dynamic_cast<QLineSeries*>(_chart->series().first());
     if (series == nullptr)
         return;
-
     series->clear();
+
     double yAxisMax = 0.0, yAxisMin = 0.0;
-    int xAxis = MODES_DATA_LEN / 16;
+    int xAxis = 8192;
     for (int i = 0, j = 0; i < xAxis; i++, j+=2)
     {
 
-        QPointF p((qreal) i,sqrt(dataVector.at(j)*dataVector.at(j) + dataVector.at(j+1)* dataVector.at(j+1)));
+        QPointF p((qreal) i,sqrt((dataVector.at(j) - 127) * (dataVector.at(j) - 127) +
+                                  (dataVector.at(j+1) - 127) * (dataVector.at(j+1) -127)));
+
+//        QPointF p((qreal) i,(dataVector.at(j) - 127));
+
         *series << p;
         yAxisMax = qMax(yAxisMax,p.ry());
         yAxisMin = qMin(yAxisMin,p.ry());
     }
-
-    _chartView->update();
-    qDebug()<<"update";
+    _chartView->repaint();
 }

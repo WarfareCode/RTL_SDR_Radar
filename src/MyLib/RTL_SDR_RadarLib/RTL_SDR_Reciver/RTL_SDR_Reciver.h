@@ -30,11 +30,6 @@
 
 #include "../../../include/IReciverDevice.h"
 
-//namespace RTL_SDR
-//{
-//    void rtlsdrCallback(unsigned char *buf, uint32_t len, void *ctx) ;
-//    void* readerThreadEntryPoint(void *arg);
-
 class RTL_SDR_RECIVERSHARED_EXPORT RTL_SDR_Reciver : public IReciverDevice
 {
 
@@ -60,11 +55,9 @@ public:
 
     QVector<uint8_t> getDataBlock(size_t size) override;
     const uint8_t *getDataBlockPtr(size_t size) override;
-
+    bool readDataBlock(QVector<uint8_t> &vector, size_t size = MODES_DATA_LEN) override;
 protected:
     bool initDevice() override;
 };
-
-//}
 
 #endif // RTL_SDR_RECIVER_H

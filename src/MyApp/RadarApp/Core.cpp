@@ -17,16 +17,25 @@ Core::Core(QObject *parent) : QObject(parent)
 
     ServiceLocator::provide(QSharedPointer<ICarrierClass>( new Carrier(false)) );
 
+    _device = QSharedPointer<IReciverDevice>(new RTL_SDR_Reciver());
+    _device->openDevice();
+    _dataController = new DataController(_device,QSharedPointer<IDemodulator>());
+    _dataController->run();
+
     _poolObjects = QSharedPointer<IPoolObject>(new PoolObject());
 
     _mainWindow.subscribe(_poolObjects);
 
     QObject::connect(&_timer,SIGNAL(timeout()),this,SLOT(slotTimeout()));
     _timer.start(1000);
+
 }
 
 Core::~Core()
 {
+    _dataController->stop();
+    delete _dataController;
+
     _poolObjects.clear();
 }
 
@@ -37,6 +46,7 @@ void Core::init()
 
 void Core::slotTimeout()
 {
+    _dataController->getDataToChart();
 }
 
 

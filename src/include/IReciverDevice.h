@@ -13,9 +13,9 @@ public:
     virtual bool isOpenDevice() = 0;
     virtual void closeDevice() = 0;
 
-    virtual QVector<uint8_t> getDataBlock(size_t size) = 0;
-    virtual const uint8_t* getDataBlockPtr(size_t size) = 0;
-
+    virtual QVector<uint8_t> getDataBlock(size_t) = 0;
+    virtual const uint8_t* getDataBlockPtr(size_t) = 0;
+    virtual bool readDataBlock(QVector<uint8_t>&, size_t) = 0;
 protected:
     virtual bool initDevice() = 0;
 };

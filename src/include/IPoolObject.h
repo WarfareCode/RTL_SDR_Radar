@@ -1,7 +1,6 @@
 #ifndef ICONTAINEROBJECT
 #define ICONTAINEROBJECT
 
-//пул объектов
 #include <QVector>
 #include <QSharedPointer>
 

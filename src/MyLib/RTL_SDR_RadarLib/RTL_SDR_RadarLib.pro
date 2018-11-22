@@ -7,6 +7,7 @@ SUBDIRS += \
     PoolObject \
     GraphicsWidget \
     Logger \
-    RTL_SDR_Reciver
+    RTL_SDR_Reciver \
+    DataController
 
 CONFIG += ordered

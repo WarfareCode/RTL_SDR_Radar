@@ -56,6 +56,17 @@ const uint8_t *RTL_SDR_Reciver::getDataBlockPtr(size_t size)
     return _data.data();
 }
 
+bool RTL_SDR_Reciver::readDataBlock(QVector<uint8_t> &vector, size_t size)
+{
+    if((size_t) vector.size() < size)
+        vector.resize(size);
+
+    int n_read = 0;
+    int ret = rtlsdr_read_sync(_dev, vector.data(), size, &n_read);
+    qDebug()<<"readDataBlock() -> n_read = "<< n_read;
+    return (ret < 0) ? false : true;
+}
+
 bool RTL_SDR_Reciver::initDevice()
 {
     int32_t device_count;
