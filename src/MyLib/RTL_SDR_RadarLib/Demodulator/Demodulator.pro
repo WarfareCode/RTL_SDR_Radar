@@ -1,15 +1,15 @@
 #-------------------------------------------------
 #
-# Project created by QtCreator 2018-11-22T11:00:31
+# Project created by QtCreator 2019-05-07T21:15:12
 #
 #-------------------------------------------------
 
-QT       += gui
+QT       -= gui
 
-TARGET = DataController
+TARGET = Demodulator
 TEMPLATE = lib
 
-DEFINES += DATACONTROLLER_LIBRARY
+DEFINES += DEMODULATOR_LIBRARY
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which has been marked as deprecated (the exact warnings
@@ -23,21 +23,12 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-        DataController.cpp \
-    DataWorker.cpp \
-    DataWorkerImit.cpp
+        Demodulator.cpp
 
 HEADERS += \
-        DataController.h \
-        datacontroller_global.h \ 
-    ../../../include/IDataController.h \
-    ../../../include/IWorker.h \
-    ../../../include/IDemodulator.h \
-    DataWorker.h \
-    DataWorkerImit.h \
-    ../../../include/dsp/SrcDataAdc.h \
-    ../../../include/IDataFIFO.h \
-    ../../../include/dsp/IDSP.h
+        ../../../include/IDemodulator.h \
+        Demodulator.h \
+        demodulator_global.h 
 
 unix {
     target.path = /usr/lib

@@ -41,7 +41,7 @@ DataController::~DataController()
 
 uint8_t *DataController::getDataToChart()
 {
-    qDebug()<<"DataController::getDataToChart() thread id ="<<QThread::currentThreadId();
+    //qDebug()<<"DataController::getDataToChart() thread id ="<<QThread::currentThreadId();
     _worker->getData();
     return nullptr;
 }

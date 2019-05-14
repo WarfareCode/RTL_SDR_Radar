@@ -1,6 +1,7 @@
 TEMPLATE = subdirs
 
 SUBDIRS += \
+    Demodulator \
     Subject \
     Carrier \
     MapLib \
@@ -8,6 +9,7 @@ SUBDIRS += \
     GraphicsWidget \
     Logger \
     RTL_SDR_Reciver \
-    DataController
+    DataController \
+    DSPLib
 
 CONFIG += ordered

@@ -19,7 +19,10 @@ Core::Core(QObject *parent) : QObject(parent)
 
     _device = QSharedPointer<IReciverDevice>(new RTL_SDR_Reciver());
     _device->openDevice();
-    _dataController = new DataController(_device,QSharedPointer<IDemodulator>());
+
+    _demodulator = QSharedPointer<IDemodulator>(new Demodulator());
+
+    _dataController = new DataController(_device,_demodulator);
     _dataController->run();
 
     _poolObjects = QSharedPointer<IPoolObject>(new PoolObject());
@@ -27,12 +30,14 @@ Core::Core(QObject *parent) : QObject(parent)
     _mainWindow.subscribe(_poolObjects);
 
     QObject::connect(&_timer,SIGNAL(timeout()),this,SLOT(slotTimeout()));
-    _timer.start(1000);
+    _timer.start(500);
 
 }
 
 Core::~Core()
 {
+    _timer.stop();
+
     _dataController->stop();
     delete _dataController;
 
