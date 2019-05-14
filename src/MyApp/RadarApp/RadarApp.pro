@@ -55,4 +55,5 @@ LIBS += -lLogger \
         -lCarrier \
         -lMapLib \
         -lDataController \
-        -lRTL_SDR_Reciver
+        -lRTL_SDR_Reciver \
+        -lDemodulator

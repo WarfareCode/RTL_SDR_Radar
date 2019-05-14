@@ -39,7 +39,7 @@ class RTL_SDR_RECIVERSHARED_EXPORT RTL_SDR_Reciver : public IReciverDevice
     int _dev_index = 0;
     int _gain = MODES_MAX_GAIN;
     int _enable_agc = 0;
-    int _freq = MODES_DEFAULT_FREQ;
+    uint64_t _freq = MODES_DEFAULT_FREQ;
 
     QVector<uint8_t> _data;            /* Raw IQ samples buffer */
     rtlsdr_dev_t *_dev;
@@ -56,6 +56,7 @@ public:
     QVector<uint8_t> getDataBlock(size_t size) override;
     const uint8_t *getDataBlockPtr(size_t size) override;
     bool readDataBlock(QVector<uint8_t> &vector, size_t size = MODES_DATA_LEN) override;
+    void setFreq(uint32_t freq) override;
 protected:
     bool initDevice() override;
 };
