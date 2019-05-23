@@ -22,7 +22,6 @@ GraphicsWidget::GraphicsWidget(double w,
 
     //обновление сектора
     connect(&_timer,SIGNAL(timeout()),this,SLOT(timeout()));
-    _timer.start(25);
 
     QObject::connect(this,
                      SIGNAL(signalUpdateData()),
@@ -323,7 +322,7 @@ void GraphicsWidget::drawBackground(QPainter *painter, const QRectF &rect)
 {
     Q_UNUSED(rect);
 
-    //!!!!!!!!сюда впендюрить отрисовку карты
+    //!!!!!!!!сюда вставить отрисовку карты
     //!
 
     painter->setRenderHint(QPainter::Antialiasing);

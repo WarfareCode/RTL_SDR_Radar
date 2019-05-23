@@ -61,7 +61,6 @@ void DataWorker::exec()
 
         if(!_device.isNull() && _device->isOpenDevice())
         {
-
             const uint8_t* ptrData = _device->getDataBlockPtr(size_t(MODES_DATA_LEN));
 
             if(ptrData != nullptr)
@@ -75,14 +74,13 @@ void DataWorker::exec()
                 /* Read the new data. */
                 memcpy(_dataVector.data() + MODES_FULL_LEN_OFFS, ptrData, size_t(MODES_DATA_LEN));
             }
+
+            if(!_demod.isNull())
+                _demod->demodulate(_dataVector,nullptr);
+
+            if(!_dsp.isNull())
+                _dsp->makeAll(_dataVector);
         }
-
-
-        if(!_demod.isNull())
-            _demod->demodulate(_dataVector,nullptr);
-
-        if(!_dsp.isNull())
-            _dsp->makeAll(_dataVector);
 
         if(_abort)
             break;

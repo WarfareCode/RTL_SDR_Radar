@@ -1,12 +1,29 @@
+#include <QDebug>
 #include "Logger.h"
 
-
-Logger::Logger()
+Logger::Logger(int size) : _size(size)
 {
 }
 
-void Logger::add(QString text, TypeLog type)
+Logger::~Logger()
 {
-    Q_UNUSED(type);
-    qDebug()<<text;
+
 }
+
+void Logger::push(const QString &text, TypeLog type)
+{
+    QMutexLocker locker(&_mutex);
+    if(_stack.size() < _size)
+        _stack.push(text);
+}
+
+QString Logger::pop()
+{
+    QMutexLocker locker(&_mutex);
+    if(!_stack.isEmpty())
+        return _stack.pop();
+    else
+        return QString();
+}
+
+

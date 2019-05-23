@@ -1,7 +1,5 @@
 #include "RTL_SDR_Reciver.h"
 
-//using namespace  RTL_SDR;
-
 RTL_SDR_Reciver::RTL_SDR_Reciver()
 {
     qDebug()<<"create RTL_SDR_Reciver()";
@@ -31,8 +29,14 @@ void RTL_SDR_Reciver::closeDevice()
     if(!_isOpen)
         return;
 
-    QString str = QString("%1: %2, %3, SN: %4 ").arg(_dev_index).arg(vendor).arg(product).arg(serial);
+    QString str = QString("%1: %2, %3, SN: %4 ").arg(_dev_index)
+                                                .arg(vendor)
+                                                .arg(product)
+                                                .arg(serial);
     qDebug()<<"Close device: \n" <<str;
+
+    if(!_loger.isNull())
+        _loger->push("Close device: \n" + str);
     rtlsdr_cancel_async(_dev);
     rtlsdr_close(_dev);
     _isOpen = false;
@@ -95,6 +99,8 @@ bool RTL_SDR_Reciver::initDevice()
     if (!device_count)
     {
         qDebug()<<"No supported RTLSDR devices found";
+        if(!_loger.isNull())
+            _loger->push("No supported RTLSDR devices found");
         return false;
     }
 
@@ -110,6 +116,10 @@ bool RTL_SDR_Reciver::initDevice()
             str.append("(currently selected)");
 
         qDebug()<<str;
+
+        if(!_loger.isNull())
+            _loger->push("Found "+ QString::number(device_count,10) + " device(s): \n" + str);
+
     }
 
     if (rtlsdr_open(&_dev, _dev_index) < 0)

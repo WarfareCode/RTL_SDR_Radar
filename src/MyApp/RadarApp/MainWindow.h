@@ -17,9 +17,11 @@ public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
     void subscribe(QSharedPointer<IPoolObject> poolObject);
+    void showRadarWidget(bool state);
 private:
     Ui::MainWindow *ui;
     GraphicsWidget* _graphicsWidget = nullptr;
+
 };
 
 #endif // MAINWINDOW_H

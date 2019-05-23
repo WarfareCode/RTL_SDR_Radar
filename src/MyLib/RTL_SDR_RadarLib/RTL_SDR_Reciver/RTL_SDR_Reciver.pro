@@ -57,4 +57,5 @@ include( ../../../../lib.pri )
 DISTFILES += \
     ../../../../import/sdr_dev/rtl-sdr.rules
 
-LIBS += -lusb-1.0
+LIBS += -lusb-1.0 \
+        -lLogger

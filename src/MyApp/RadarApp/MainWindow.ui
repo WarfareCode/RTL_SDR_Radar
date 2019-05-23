@@ -154,7 +154,7 @@
     <item>
      <widget class="QTabWidget" name="tbWorkPanel">
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="tabTableSrc">
        <attribute name="title">
@@ -165,6 +165,23 @@
        <attribute name="title">
         <string>Диагностика</string>
        </attribute>
+      </widget>
+      <widget class="QWidget" name="tabTerminal">
+       <attribute name="title">
+        <string>Терминал</string>
+       </attribute>
+       <layout class="QVBoxLayout" name="verticalLayout_2">
+        <item>
+         <widget class="QTextEdit" name="teTerminal">
+          <property name="font">
+           <font>
+            <family>Ubuntu Mono</family>
+            <pointsize>12</pointsize>
+           </font>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </widget>
      </widget>
     </item>

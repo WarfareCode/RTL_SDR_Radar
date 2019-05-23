@@ -13,10 +13,11 @@ enum class TypeLog
 
 class ILogger
 {
-
 public:
     virtual ~ILogger(){}
-    virtual void add(QString text, TypeLog type = TypeLog::Default) = 0;
+    virtual void push(const QString& text,
+                      TypeLog type = TypeLog::Default) = 0;
+    virtual QString pop() = 0;
 };
 
 #endif // ILOGGER

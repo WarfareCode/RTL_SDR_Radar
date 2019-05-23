@@ -29,11 +29,13 @@
 #include "../../../../import/sdr_dev/include/constant.h"
 
 #include "../../../include/IReciverDevice.h"
+#include "../../../include/ILogger.h"
 
 class RTL_SDR_RECIVERSHARED_EXPORT RTL_SDR_Reciver : public IReciverDevice
 {
 
     bool _isOpen = false;
+    bool _isImit = false;
     char vendor[256], product[256], serial[256];
 
     int _dev_index = 0;
@@ -43,6 +45,7 @@ class RTL_SDR_RECIVERSHARED_EXPORT RTL_SDR_Reciver : public IReciverDevice
 
     QVector<uint8_t> _data;            /* Raw IQ samples buffer */
     rtlsdr_dev_t *_dev;
+    QSharedPointer<ILogger> _loger;
 
 public:
 
@@ -52,6 +55,21 @@ public:
     bool openDevice() override;
     bool isOpenDevice() override;
     void closeDevice() override;
+
+    void setLogger(QSharedPointer<ILogger> log) override {_loger = log; }
+    /*!
+     * \brief перевод устроства в режим имитации,
+     * если реально устроства нет
+     * \return true - включен режим имитации,
+     * false - работает реальное устроство
+     */
+    bool isImitMode() override { return _isImit; }
+    /*!
+     * \brief установка режима имитации
+     * \param [in] state - включить или выключить имитацию
+     * true - имитация включена, false - выключена
+     */
+    void setImitMode(bool state) override { _isImit = state; }
 
     QVector<uint8_t> getDataBlock(size_t size) override;
     const uint8_t *getDataBlockPtr(size_t size) override;

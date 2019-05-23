@@ -20,7 +20,8 @@ class GraphicsObject : public QGraphicsObject
     //загрузка иконки объекта
     void loadPixmap();
 
-    QVariant itemChange(GraphicsItemChange change, const QVariant &value);
+    QVariant itemChange(GraphicsItemChange change,
+                        const QVariant &value) override;
 public:
     explicit GraphicsObject();
     virtual ~GraphicsObject() override;
