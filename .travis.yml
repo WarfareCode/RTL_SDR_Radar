@@ -28,7 +28,7 @@ addons:
         - mesa-utils
         - libgl1-mesa-glx
         - libqt5opengl5
-        
+
 # установка необходимых зависимостей
 # версию qt выбирается исходя https://launchpad.net/~beineri 
 before_install:
@@ -47,7 +47,6 @@ before_script:
   - export LIBGL_ALWAYS_SOFTWARE=1
   - xpra --xvfb="Xorg +extension GLX +extension RANDR +extension RENDER -config `pwd`/test/dummy.xorg.conf -logfile ${HOME}/.xpra/xorg.log"  start :99
   - sleep 3 
-  - LIBGL_ALWAYS_SOFTWARE=1 glxinfo
   - glxinfo
   - cat ${HOME}/.xpra/xorg.log
 #  - dmesg | grep vmw
