@@ -19,8 +19,7 @@ public:
     virtual void setReciverDevice(QSharedPointer<IReciverDevice>) = 0;
     virtual void setDemodulator(QSharedPointer<IDemodulator>) = 0;
     virtual void abortExec() = 0;
-    virtual void getData() = 0;
-
+    virtual void setTimeout(uint64_t msleep) = 0;
 public slots:
    virtual void exec() = 0;
 signals:

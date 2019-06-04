@@ -22,6 +22,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::updateTerminal()
 {
-    if(!_logger.isNull())
+    if(!_logger.isNull() && !_logger->isEmpty())
         ui->teTerminal->append(_logger->pop());
+
 }

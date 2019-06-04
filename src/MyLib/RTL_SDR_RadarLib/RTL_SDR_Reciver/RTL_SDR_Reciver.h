@@ -51,7 +51,11 @@ public:
 
     RTL_SDR_Reciver();
     ~RTL_SDR_Reciver() override;
-
+    /*!
+     * \brief открытие и инициализация устроства
+     * \return  true - инициализация прошла удачно
+     *          false - возникла ошибка
+     */
     bool openDevice() override;
     bool isOpenDevice() override;
     void closeDevice() override;

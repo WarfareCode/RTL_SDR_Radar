@@ -32,6 +32,7 @@
 #define DEMODULATOR_H
 
 #include <QSharedPointer>
+#include <QRunnable>
 
 #include "demodulator_global.h"
 #include "IDemodulator.h"
@@ -126,8 +127,9 @@ class DEMODULATORSHARED_EXPORT Demodulator : public IDemodulator
 {
     QVector<uint16_t> _magnitude;
     QVector<uint32_t> icao_cache;
-    /* Interactive mode */
+
     QHash<uint32_t,QSharedPointer<aircraft>> _hashAircrafts;
+    QSharedPointer<IPoolObject> _pool;
 
     /* Statistics */
     long long stat_valid_preamble = 0;
@@ -153,13 +155,13 @@ class DEMODULATORSHARED_EXPORT Demodulator : public IDemodulator
 
     uint16_t* maglut;
 public:
-    Demodulator();
+    Demodulator(QSharedPointer<IPoolObject> pool);
     ~Demodulator() override ;
 
-    bool demodulate(QVector<uint8_t>& vector,IPoolObject* pool) override;
-
+    bool setDataForDemodulate(const QVector<uint8_t>& vector) override;
+    void run() override;
 private:
-    void computeMagnitudeVector(QVector<uint8_t> &vector,
+    void computeMagnitudeVector(const QVector<uint8_t> &vector,
                                 QVector<uint16_t> &magnitude);
     void detectModeS(uint16_t *m, uint32_t mlen);
     void dumpRawMessage(const QString &descr,

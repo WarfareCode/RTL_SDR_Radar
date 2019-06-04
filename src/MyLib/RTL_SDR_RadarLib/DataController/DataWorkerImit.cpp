@@ -25,10 +25,11 @@ void DataWorkerImit::abortExec()
 
 }
 
-void DataWorkerImit::getData()
+void DataWorkerImit::setTimeout(uint64_t msleep)
 {
 
 }
+
 
 void DataWorkerImit::exec()
 {

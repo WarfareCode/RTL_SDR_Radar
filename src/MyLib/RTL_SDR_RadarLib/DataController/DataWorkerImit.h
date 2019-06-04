@@ -12,7 +12,7 @@ public:
     void setReciverDevice(QSharedPointer<IReciverDevice>) override;
     void setDemodulator(QSharedPointer<IDemodulator>) override;
     void abortExec() override;
-    void getData() override;
+    void setTimeout(uint64_t msleep) override;
 public slots:
     void exec() override;
 };

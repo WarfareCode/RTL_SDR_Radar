@@ -37,7 +37,7 @@ const uint8_t MODES_DEBUG_NOPREAMBLE    = (1<<4);
 const uint16_t MODES_DEBUG_NOPREAMBLE_LEVEL  = 25;
 
 const uint16_t MODES_INTERACTIVE_ROWS   = 15;   /* Rows on screen */
-const uint16_t MODES_INTERACTIVE_TTL    = 60 ;  /* TTL before being removed */
+const uint16_t MODES_INTERACTIVE_TTL    = 6000;  /* TTL before being removed in ms*/
 
 #endif // CONST_H
 

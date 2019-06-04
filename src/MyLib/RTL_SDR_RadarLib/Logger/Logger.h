@@ -19,6 +19,8 @@ public:
     void push(const QString &text,
               TypeLog type = TypeLog::Default) override;
     QString pop() override;
+
+    bool isEmpty() override;
 };
 
 #endif // LOGGER_H

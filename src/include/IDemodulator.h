@@ -2,14 +2,15 @@
 #define IDEMODULATOR_H
 
 #include <QVector>
+#include <QRunnable>
 
 class IPoolObject;
 
-class IDemodulator
+class IDemodulator :  public QRunnable
 {
 public:
     virtual ~IDemodulator(){}
-    virtual bool demodulate(QVector<uint8_t>& vector,IPoolObject* pool) = 0;
+    virtual bool setDataForDemodulate(const QVector<uint8_t>& vector) = 0;
 };
 
 #endif // IDEMODULATOR_H

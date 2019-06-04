@@ -19,7 +19,8 @@ Core::Core(QObject *parent) : QObject(parent)
         qApp->setStyleSheet(StyleSheet);
     }
     else
-        qDebug()<<"error load QSS file.Need filepath"<<QApplication::applicationDirPath()+"/import/style.qss";
+        qDebug()<<"error load QSS file.Need filepath"
+               <<QApplication::applicationDirPath()+"/import/style.qss";
 
     _logger = QSharedPointer<ILogger>(new Logger(sizeLog));
     _mainWindow.setLogger(_logger);
@@ -34,6 +35,7 @@ Core::~Core()
     _poolObjects.clear();
     _dataController.clear();
     _demodulator.clear();
+    _device->closeDevice();
     _device.clear();
     _logger.clear();
 }
@@ -46,14 +48,14 @@ void Core::init()
     _device = QSharedPointer<IReciverDevice>(new RTL_SDR_Reciver());
     _device->setLogger(_logger);
 
-    _demodulator = QSharedPointer<IDemodulator>(new Demodulator());
+    _demodulator = QSharedPointer<IDemodulator>(new Demodulator(nullptr));
 
     _dataController = QSharedPointer<IDataController>(new DataController(_device,
                                                                          _demodulator));
 
     QObject::connect(&_timer,SIGNAL(timeout()),this,SLOT(slotTimeout()));
     _timer.start(1000);
-
+_dataController->run();
 }
 
 void Core::slotTimeout()
@@ -63,6 +65,7 @@ void Core::slotTimeout()
         if(_device->openDevice())
             _dataController->run();
     }
+     //qDebug()<<"MAin Thread thread id ="<<QThread::currentThreadId();
 }
 
 

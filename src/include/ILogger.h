@@ -18,6 +18,8 @@ public:
     virtual void push(const QString& text,
                       TypeLog type = TypeLog::Default) = 0;
     virtual QString pop() = 0;
+
+    virtual bool isEmpty() = 0;
 };
 
 #endif // ILOGGER

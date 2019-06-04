@@ -2,6 +2,7 @@
 #define DATACONTROLLER_H
 
 #include <QThread>
+#include <memory>
 
 #include "datacontroller_global.h"
 #include "../../../include/IDataController.h"
@@ -12,7 +13,7 @@
 
 class DATACONTROLLERSHARED_EXPORT DataController : public IDataController
 {
-    IWorker* _worker = nullptr;
+    std::unique_ptr<IWorker> _worker = nullptr;
     QThread* _dataThread = nullptr;
 
 public:

@@ -26,4 +26,10 @@ QString Logger::pop()
         return QString();
 }
 
+bool Logger::isEmpty()
+{
+    QMutexLocker locker(&_mutex);
+    return _stack.isEmpty();
+}
+
 
