@@ -42,15 +42,6 @@ install:
     - sudo apt-get install qt511base qt511charts-no-lgpl qt511xmlpatterns
     - source /opt/qt511/bin/qt511-env.sh
 
-before_script:
-  - export DISPLAY=:99
-  - export LIBGL_ALWAYS_SOFTWARE=1
-  - xpra --xvfb="Xorg +extension GLX +extension RANDR +extension RENDER -config `pwd`/test/dummy.xorg.conf -logfile ${HOME}/.xpra/xorg.log"  start :99
-  - sleep 3 
-  - glxinfo
-  - cat ${HOME}/.xpra/xorg.log
-#  - dmesg | grep vmw
-
 script:
     - /opt/qt511/bin/qmake PREFIX=/usr
     - make
