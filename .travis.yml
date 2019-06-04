@@ -27,7 +27,8 @@ addons:
         - libudev-dev
         - mesa-utils
         - libgl1-mesa-glx
-
+        - libqt5opengl5
+        
 # установка необходимых зависимостей
 # версию qt выбирается исходя https://launchpad.net/~beineri 
 before_install:
@@ -38,7 +39,7 @@ before_install:
     - export DEBIAN_FRONTEND=noninteractive
     - sudo apt-get -yq --force-yes install libgl1-mesa-dev libgl1-mesa-glx mesa-common-dev libglapi-mesa libgbm1 libgl1-mesa-dri libxatracker-dev xvfb
 install:
-    - sudo apt-get install qt511base qt511charts-no-lgpl qt511xmlpatterns libqt5opengl5
+    - sudo apt-get install qt511base qt511charts-no-lgpl qt511xmlpatterns
     - source /opt/qt511/bin/qt511-env.sh
 
 before_script:
