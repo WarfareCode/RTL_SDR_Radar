@@ -13,9 +13,9 @@ before_install:
     - sudo apt-get update
 
 install:
-    - sudo apt-get install qt511base qt511charts-no-lgpl qt511xmlpatterns
+    - sudo apt-get install qt511base qt511charts-no-lgpl qt511xmlpatterns 
     - source /opt/qt511/bin/qt511-env.sh
-
+    - sudo apt-get install libusb-1.0-0-dev
 script:
-    - /opt/qt58/bin/qmake PREFIX=/usr
+    - /opt/qt11/bin/qmake PREFIX=/usr
     - make
