@@ -28,7 +28,9 @@ addons:
         - mesa-utils
         - libgl1-mesa-glx
         - libqt5opengl5
-
+        - libfftw3-dev
+        - libfftw3-double3
+        - libfftw3-single3
 # установка необходимых зависимостей
 # версию qt выбирается исходя https://launchpad.net/~beineri 
 before_install:
