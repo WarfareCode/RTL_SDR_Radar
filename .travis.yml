@@ -17,5 +17,5 @@ install:
     - source /opt/qt511/bin/qt511-env.sh
     - sudo apt-get install libusb-1.0-0-dev
 script:
-    - /opt/qt11/bin/qmake PREFIX=/usr
+    - /opt/qt511/bin/qmake PREFIX=/usr
     - make
