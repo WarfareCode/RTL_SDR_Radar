@@ -15,7 +15,7 @@ DataWorker::DataWorker(QSharedPointer<IReciverDevice> dev,
     qDebug()<<"create DataWorker";
     _dataVector.resize(int(_dataVectorSize));
 
-    _ms_sleep = 2000;
+    _ms_sleep = DEFAULT_SLEEP_MS;
 }
 
 DataWorker::~DataWorker()
@@ -25,37 +25,13 @@ DataWorker::~DataWorker()
     qDebug()<<"delete DataWorker";
 }
 
-void DataWorker::setLogger(ILogger *)
-{
-
-}
-
-void DataWorker::setReciverDevice(QSharedPointer<IReciverDevice> dev)
-{
-    _device = dev;
-}
-
-void DataWorker::setDemodulator(QSharedPointer<IDemodulator> dem)
-{
-    _demod = dem;
-}
-
-void DataWorker::abortExec()
-{
-    _abort = true;
-}
-
-void DataWorker::setTimeout(uint64_t msleep)
-{
-    _ms_sleep = msleep;
-}
-
 void DataWorker::exec()
 {
     _abort = false;
 
     _start = steady_clock::now();
     _lastRequest = _start;
+
     forever
     {
         if(_abort)
@@ -113,6 +89,11 @@ bool DataWorker::processData()
     {
         _dsp->makeAll(_dataVector);
     }
-    QThreadPool::globalInstance()->waitForDone(2000);
+
+    while (!QThreadPool::globalInstance()->waitForDone(int(_ms_sleep)));
+
+    if(!_net.isNull() && _net->isConnected())
+        _net->writeDatagramm(_demod->getRawDump());
+
     return true;
 }

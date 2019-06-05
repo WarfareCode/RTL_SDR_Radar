@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui network
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -43,10 +43,13 @@ LIBS += -lLogger \
 
 SOURCES += \
         main.cpp \
+    network/NetworkWorker.cpp \
     ui/Mainwindow.cpp \
     core/Core.cpp
 
 HEADERS += \
+    ../../include/INetworkWorker.h \
+    network/NetworkWorker.h \
     ui/Mainwindow.h \
     core/Core.h
 

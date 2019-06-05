@@ -127,6 +127,11 @@ void Demodulator::run()
     detectModeS(_magnitude.data(),_magnitude.size());
 }
 
+QByteArray Demodulator::getRawDump()
+{
+    return QByteArray();
+}
+
 
 /* Turn I/Q samples pointed by data into the magnitude vector
  * pointed by magnitude. */
@@ -324,8 +329,7 @@ good_preamble:
         delta = 0;
         for (i = 0; i < msglen*8*2; i += 2)
         {
-            delta += abs(m[j+i+MODES_PREAMBLE_US*2]-
-                    m[j+i+MODES_PREAMBLE_US*2+1]);
+            delta += abs(m[j+i+MODES_PREAMBLE_US*2] - m[j+i+MODES_PREAMBLE_US*2+1]);
         }
         delta /= msglen*4;
 
@@ -420,9 +424,6 @@ good_preamble:
 
     interactiveRemoveStaleAircrafts();
 }
-
-
-
 
 /* Try to fix single bit errors using the checksum. On success modifies
  * the original buffer with the fixed version, and returns the position

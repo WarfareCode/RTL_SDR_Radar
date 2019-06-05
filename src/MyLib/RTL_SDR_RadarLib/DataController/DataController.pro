@@ -24,17 +24,16 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         DataController.cpp \
-    DataWorker.cpp \
-    DataWorkerImit.cpp
+    DataWorker.cpp
 
 HEADERS += \
+        ../../../include/INetworkWorker.h \
         DataController.h \
         datacontroller_global.h \ 
     ../../../include/IDataController.h \
     ../../../include/IWorker.h \
     ../../../include/IDemodulator.h \
     DataWorker.h \
-    DataWorkerImit.h \
     ../../../include/dsp/SrcDataAdc.h \
     ../../../include/IDataFIFO.h \
     ../../../include/dsp/IDSP.h

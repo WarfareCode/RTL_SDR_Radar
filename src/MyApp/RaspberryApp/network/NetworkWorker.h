@@ -1,53 +1,56 @@
-#ifndef INETWORKWORKER
-#define INETWORKWORKER
+#ifndef NETWORKWORKER_H
+#define NETWORKWORKER_H
 
-#include <QObject>
+#include <QTcpSocket>
+#include <memory>
+#include "INetworkWorker.h"
+#include "ILogger.h"
 
-class IPackageController;
-class ILogger;
-
-class INetworkWorker: public QObject
+class NetworkWorker : public INetworkWorker
 {
     Q_OBJECT
 
+    ILogger* _log = nullptr;
+    IPackageController* _pkgCtrl = nullptr;
+    std::unique_ptr<QTcpSocket> _socket;
+    bool _isConnected = false;
+
+    void addDebugMsg(const QString& str);
 public:
-    virtual ~INetworkWorker(){}
-    /*!
-     *  \brief внедрение зависимости модуля логгирования
-     */
-    virtual void setLogger(ILogger* log) = 0;
-    /*!
-     *  \brief внедрение зависимости модуля контроллера пакетов
-     */
-    virtual void setController(IPackageController*) = 0;
+    NetworkWorker(const QString& ip,
+                  uint16_t port);
+
+    ~NetworkWorker() override;
+
+    void setLogger(ILogger* log) override { _log = log; }
+    void setController(IPackageController* ctrl) override { _pkgCtrl = ctrl; }
+
 
     /*!
      *   \brief Подключение к физическому устройству.
      *   \return результат операции
      */
-    virtual bool connect(const QString&,
-                         uint16_t ,
-                         uint16_t timeout = 1000) = 0;
+    bool connect(const QString& ip,
+                 uint16_t port,
+                 uint16_t timeout = 1000) override;
 
     /*!
      * \brief Проверка состояние подключения
      * \return есть подключение или нет
      */
-    virtual bool isConnected() = 0;
+    bool isConnected() override {return _isConnected; }
 
     /*!
      * \brief отключение
      */
-    virtual void disconnect() = 0;
-
-public slots:
+    void disconnect() override;
     /*!
      *  \brief Запись массива данных,
      *  используя ранее установленное подключение
      *  \param [in] byteArray - массив данных
      *  \return количество отправленных байт, -1 в случае ошибки
     */
-    virtual int64_t writeDatagramm(const QByteArray &byteArray) = 0;
+    int64_t writeDatagramm(const QByteArray &byteArray) override;
     /*!
      *  \brief Запись массива данных,
      *  без использования установленного ранее подключения.
@@ -57,15 +60,14 @@ public slots:
      *  \param [in] byteArray - массив данных
      *  \return количество отправленных байт, -1 в случае ошибки
     */
-    virtual int64_t writeDatagramm(QString& ip,
-                                   uint16_t port,
-                                   const QByteArray &byteArray) = 0;
-
+    int64_t writeDatagramm(QString &ip,
+                           uint16_t port,
+                           const QByteArray &byteArray) override;
     /*!
      *  \brief Чтение массива данных
      *  \return количество прочтённых байт, -1 в случае ошибки
     */
-    virtual int64_t readDatagramm() = 0;
+    int64_t readDatagramm() override { return 0; }
 };
-#endif // INETWORKWORKER
 
+#endif // NETWORKWORKER_H

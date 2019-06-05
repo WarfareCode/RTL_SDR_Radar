@@ -101,7 +101,7 @@ struct aircraft {
         even_cprtime = 0;
         lat = -200.0;
         lon = -200.0;
-        seen = time(NULL);
+        seen = time(nullptr);
         messages = 0;
         addr = _addr;
     }
@@ -160,6 +160,8 @@ public:
 
     bool setDataForDemodulate(const QVector<uint8_t>& vector) override;
     void run() override;
+    QByteArray getRawDump() override;
+
 private:
     void computeMagnitudeVector(const QVector<uint8_t> &vector,
                                 QVector<uint16_t> &magnitude);

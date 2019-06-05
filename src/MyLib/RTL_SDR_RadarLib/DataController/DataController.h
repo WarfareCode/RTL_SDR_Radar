@@ -5,11 +5,10 @@
 #include <memory>
 
 #include "datacontroller_global.h"
-#include "../../../include/IDataController.h"
-#include "../../../include/IPoolObject.h"
+#include "IDataController.h"
+#include "IPoolObject.h"
 
 #include "DataWorker.h"
-#include "DataWorkerImit.h"
 
 class DATACONTROLLERSHARED_EXPORT DataController : public IDataController
 {
@@ -26,6 +25,13 @@ public:
     void run() override;
     void stop() override;
     bool isRunning() override;
+
+    void setLogger(ILogger* log) override;
+    void setReciverDevice(QSharedPointer<IReciverDevice> dev) override;
+    void setDemodulator(QSharedPointer<IDemodulator> dem) override;
+    void setDSP(QSharedPointer<IDSP> dsp) override;
+    void setNetworkModule(QSharedPointer<INetworkWorker> net) override;
+
 };
 
 #endif // DATACONTROLLER_H

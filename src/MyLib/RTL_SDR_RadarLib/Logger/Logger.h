@@ -11,7 +11,7 @@ class LOGGERSHARED_EXPORT Logger: public ILogger
 {
     QStack<QString> _stack;
     QMutex _mutex;
-    int _size = 100;
+    int _size = 1000;
 
 public:
     Logger(int size);

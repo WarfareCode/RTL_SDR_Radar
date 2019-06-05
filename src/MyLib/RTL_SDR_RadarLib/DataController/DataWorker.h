@@ -19,17 +19,24 @@ class DataWorker : public IWorker
     QSharedPointer<IReciverDevice> _device;
     QSharedPointer<IDemodulator> _demod;
     QSharedPointer<IDSP> _dsp;
-    QVector<uint8_t> _dataVector;
+    QSharedPointer<INetworkWorker> _net;
+    ILogger* _log;
+
     QMutex _mutex;
     QWaitCondition _condition;
     std::atomic<bool> _abort;
+
     size_t _dataVectorSize = MODES_DATA_LEN + MODES_FULL_LEN_OFFS;
-    bool processData();
+    QVector<uint8_t> _dataVector;
+
+
     std::chrono::steady_clock::time_point _start;
     std::chrono::steady_clock::time_point _lastRequest;
 
     std::atomic<uint32_t> _ms_sleep;
+    uint32_t DEFAULT_SLEEP_MS = 2000;
 
+    bool processData();
 public:
     DataWorker(QSharedPointer<IReciverDevice> dev,
                QSharedPointer<IDemodulator> dem,
@@ -37,11 +44,14 @@ public:
 
     ~DataWorker() override;
 
-    void setLogger(ILogger*) override;
-    void setReciverDevice(QSharedPointer<IReciverDevice> dev) override;
-    void setDemodulator(QSharedPointer<IDemodulator> dem) override;
-    void abortExec() override;
-    void setTimeout(uint64_t msleep) override;
+    void setLogger(ILogger* log) override { _log = log; }
+    void setReciverDevice(QSharedPointer<IReciverDevice> dev) override { _device = dev;}
+    void setDemodulator(QSharedPointer<IDemodulator> dem) override { _demod = dem; }
+    void setDSP(QSharedPointer<IDSP> dsp) override { _dsp = dsp; }
+    void setNetworkModule(QSharedPointer<INetworkWorker> net) override { _net = net; }
+
+    void abortExec() override { _abort = true; }
+    void setTimeout(uint64_t msleep) override { _ms_sleep = msleep; }
 public slots:
     void exec() override;
 };
