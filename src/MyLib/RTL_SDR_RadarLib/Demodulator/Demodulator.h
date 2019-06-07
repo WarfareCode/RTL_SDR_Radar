@@ -36,6 +36,8 @@
 
 #include "demodulator_global.h"
 #include "IDemodulator.h"
+#include "ILogger.h"
+
 #include "../../../../import/sdr_dev/include/constant.h"
 
 /* The struct we use to store information about a decoded message. */
@@ -84,70 +86,31 @@ struct modesMessage
     int altitude, unit;
 };
 
-/* Structure used to describe an aircraft in iteractive mode. */
-struct aircraft {
-    aircraft(uint32_t _addr)
-    {
-        snprintf(hexaddr,sizeof(hexaddr),"%06x",(int)_addr);
-        flight[0] = '\0';
-        altitude = 0;
-        speed = 0;
-        track = 0;
-        odd_cprlat = 0;
-        odd_cprlon = 0;
-        odd_cprtime = 0;
-        even_cprlat = 0;
-        even_cprlon = 0;
-        even_cprtime = 0;
-        lat = -200.0;
-        lon = -200.0;
-        seen = time(nullptr);
-        messages = 0;
-        addr = _addr;
-    }
-    uint32_t addr;      /* ICAO address */
-    char hexaddr[7];    /* Printable ICAO address */
-    char flight[9];     /* Flight number */
-    int altitude;       /* Altitude */
-    int speed;          /* Velocity computed from EW and NS components. */
-    int track;          /* Angle of flight. */
-    time_t seen;        /* Time at which the last packet was received. */
-    long messages;      /* Number of Mode S messages received. */
-    /* Encoded latitude and longitude as extracted by odd and even
-     * CPR encoded messages. */
-    int odd_cprlat;
-    int odd_cprlon;
-    int even_cprlat;
-    int even_cprlon;
-    double lat, lon;    /* Coordinated obtained from CPR encoded data. */
-    long long odd_cprtime, even_cprtime;
-};
+class Aircraft;
 
 class DEMODULATORSHARED_EXPORT Demodulator : public IDemodulator
 {
     QVector<uint16_t> _magnitude;
     QVector<uint32_t> icao_cache;
 
-    QHash<uint32_t,QSharedPointer<aircraft>> _hashAircrafts;
-    QSharedPointer<IPoolObject> _pool;
+    QHash<uint32_t,QSharedPointer<Aircraft>> _hashAircrafts;
+    QSharedPointer<IPoolObject> _pool = nullptr;
+    QSharedPointer<ILogger> _log = nullptr;
 
     /* Statistics */
-    long long stat_valid_preamble = 0;
-    long long stat_demodulated = 0;
-    long long stat_goodcrc = 0;
-    long long stat_badcrc = 0;
-    long long stat_fixed = 0;
-    long long stat_single_bit_fix = 0;
-    long long stat_two_bits_fix = 0;
-    long long stat_http_requests = 0;
-    long long stat_sbs_connections = 0;
-    long long stat_out_of_phase = 0;
+    uint64_t stat_valid_preamble = 0;
+    uint64_t stat_demodulated = 0;
+    uint64_t stat_goodcrc = 0;
+    uint64_t stat_badcrc = 0;
+    uint64_t stat_fixed = 0;
+    uint64_t stat_single_bit_fix = 0;
+    uint64_t stat_two_bits_fix = 0;
+    uint64_t stat_out_of_phase = 0;
 
     /* Configuration */
     bool fix_errors = true;                 /* Single bit error correction if true. */
     bool check_crc = true;                  /* Only display messages with good CRC. */
     bool debug = false;                      /* Debugging mode. */
-    int interactive_rows = MODES_INTERACTIVE_ROWS;           /* Interactive mode: max number of rows. */
     int interactive_ttl = MODES_INTERACTIVE_TTL;            /* Interactive mode: TTL before deletion. */
     bool onlyaddr = false;                   /* Print only ICAO addresses. */
     bool metric = true;                     /* Use metric units. */
@@ -158,9 +121,17 @@ public:
     Demodulator(QSharedPointer<IPoolObject> pool);
     ~Demodulator() override ;
 
+    /*!
+     *  \brief внедрение зависимости модуля логгирования
+     */
+    void setLogger(QSharedPointer<ILogger> log) override { _log = log;}
+
     bool setDataForDemodulate(const QVector<uint8_t>& vector) override;
     void run() override;
     QByteArray getRawDump() override;
+    bool demodulate() override;
+
+    int32_t getCountObject() override { return _hashAircrafts.count(); }
 
 private:
     void computeMagnitudeVector(const QVector<uint8_t> &vector,
@@ -188,14 +159,14 @@ private:
     void interactiveReceiveData(modesMessage *mm);
     void displayModesMessage(modesMessage *mm);
     int ICAOAddressWasRecentlySeen(uint32_t addr);
-    long long mstime();
-    void decodeCPR(aircraft *a);
+    void decodeCPR(QSharedPointer<Aircraft> a);
     int cprModFunction(int a, int b);
     int cprNLFunction(double lat);
     int cprNFunction(double lat, int isodd);
     double cprDlonFunction(double lat, int isodd);
     QString getMEDescription(int metype, int mesub);
     void interactiveRemoveStaleAircrafts();
+    void addDebugMsg(const QString &str);
 };
 
 #endif // DEMODULATOR_H

@@ -53,6 +53,7 @@ void Core::init()
     _device->setLogger(_logger);
 
     _demodulator = QSharedPointer<IDemodulator>(new Demodulator(nullptr));
+    _demodulator->setLogger(_logger);
 
     _network = QSharedPointer<INetworkWorker>(new NetworkWorker(DEFAULT_IP,
                                                                 DEFAULT_PORT));
@@ -75,6 +76,8 @@ void Core::slotTimeout()
         if(!_network->isConnected())
             _network->connect(DEFAULT_IP,DEFAULT_PORT,100);
     }
+
+    _mainWindow.setOpenDevState((_device != nullptr) ? _device->isOpenDevice() : false);
 }
 
 

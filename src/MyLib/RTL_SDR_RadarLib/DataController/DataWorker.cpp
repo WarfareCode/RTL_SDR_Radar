@@ -8,9 +8,9 @@ using namespace std::chrono;
 DataWorker::DataWorker(QSharedPointer<IReciverDevice> dev,
                        QSharedPointer<IDemodulator> dem,
                        size_t dataSize) :
-    _device(dev),
-    _demod(dem),
-    _dataVectorSize(dataSize)
+                                          _device(dev),
+                                          _demod(dem),
+                                          _dataVectorSize(dataSize)
 {
     qDebug()<<"create DataWorker";
     _dataVector.resize(int(_dataVectorSize));
@@ -39,17 +39,16 @@ void DataWorker::exec()
 
         _start = steady_clock::now();
 
-        if(duration_cast<std::chrono::milliseconds>(_start -_lastRequest).count() < _ms_sleep)
-        {     
-             QThread::yieldCurrentThread();
-             QThread::msleep(_ms_sleep/2);
-             continue;
-        }
-        _lastRequest = steady_clock::now();
-       //qDebug()<<"DataWorker::exec() thread id ="<<QThread::currentThreadId();
-       QMutexLocker lock(&_mutex);
+        QMutexLocker lock(&_mutex);
         if(processData())
-            qDebug()<<"process data block";
+        {
+            _lastRequest = steady_clock::now();
+            if(_demod->getCountObject() > 0)
+            {
+//                qDebug()<<"process data block time(ms) ="<<duration_cast<std::chrono::milliseconds>(_lastRequest - _start).count();
+//                qDebug()<<"count detect aircraft = " << _demod->getCountObject();
+            }
+        }
     }
 
     qDebug()<<"terminate thread id" << QThread::currentThreadId();
@@ -82,7 +81,7 @@ bool DataWorker::processData()
     if(!_demod.isNull())
     {
         _demod->setDataForDemodulate(_dataVector);
-         QThreadPool::globalInstance()->start(_demod.data());
+        QThreadPool::globalInstance()->start(_demod.data());
     }
 
     if(!_dsp.isNull())
@@ -90,7 +89,7 @@ bool DataWorker::processData()
         _dsp->makeAll(_dataVector);
     }
 
-    while (!QThreadPool::globalInstance()->waitForDone(int(_ms_sleep)));
+    QThreadPool::globalInstance()->waitForDone();
 
     if(!_net.isNull() && _net->isConnected())
         _net->writeDatagramm(_demod->getRawDump());

@@ -20,6 +20,8 @@ public:
     virtual QString pop() = 0;
 
     virtual bool isEmpty() = 0;
+    virtual int32_t size() = 0;
+    virtual int32_t countMsg() = 0;
 };
 
 #endif // ILOGGER

@@ -21,6 +21,9 @@ public:
     QString pop() override;
 
     bool isEmpty() override;
+
+    int32_t size() override;
+    int32_t countMsg() override;
 };
 
 #endif // LOGGER_H

@@ -23,10 +23,12 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+        Aircraft.cpp \
         Demodulator.cpp
 
 HEADERS += \
         ../../../include/IDemodulator.h \
+        Aircraft.h \
         Demodulator.h \
         demodulator_global.h 
 

@@ -42,6 +42,7 @@ LIBS += -lLogger \
         -lDemodulator
 
 SOURCES += \
+    ../../include/widget/led/led.cpp \
         main.cpp \
     network/NetworkWorker.cpp \
     ui/Mainwindow.cpp \
@@ -49,6 +50,7 @@ SOURCES += \
 
 HEADERS += \
     ../../include/INetworkWorker.h \
+    ../../include/widget/led/led.h \
     network/NetworkWorker.h \
     ui/Mainwindow.h \
     core/Core.h
