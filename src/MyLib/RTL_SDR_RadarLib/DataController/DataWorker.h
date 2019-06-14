@@ -8,8 +8,8 @@
 #include <chrono>
 #include <atomic>
 
-#include "../../../include/IWorker.h"
-#include "../../../include/dsp/IDSP.h"
+#include "IWorker.h"
+#include "dsp/IDSP.h"
 #include "../../../../import/sdr_dev/include/constant.h"
 
 class DataWorker : public IWorker
@@ -17,26 +17,23 @@ class DataWorker : public IWorker
     Q_OBJECT
 
     QSharedPointer<IReciverDevice> _device;
-    QSharedPointer<IDemodulator> _demod;
-    QSharedPointer<IDSP> _dsp;
-    QSharedPointer<INetworkWorker> _net;
-    ILogger* _log;
-
-    QMutex _mutex;
-    QWaitCondition _condition;
-    std::atomic<bool> _abort;
 
     size_t _dataVectorSize = MODES_DATA_LEN + MODES_FULL_LEN_OFFS;
     QVector<uint8_t> _dataVector;
 
+protected:
+    std::atomic<bool> _abort;
+    QMutex _mutex;
 
-    std::chrono::steady_clock::time_point _start;
-    std::chrono::steady_clock::time_point _lastRequest;
+    std::chrono::steady_clock::time_point _firstTimeBreakpoint;
+    std::chrono::steady_clock::time_point _secondTimeBreakpoint;
 
-    std::atomic<uint32_t> _ms_sleep;
-    uint32_t DEFAULT_SLEEP_MS = 2000;
+    QSharedPointer<IDemodulator> _demod;
+    QSharedPointer<IDSP> _dsp;
+    ILogger* _log;
 
     bool processData();
+
 public:
     DataWorker(QSharedPointer<IReciverDevice> dev,
                QSharedPointer<IDemodulator> dem,
@@ -48,10 +45,9 @@ public:
     void setReciverDevice(QSharedPointer<IReciverDevice> dev) override { _device = dev;}
     void setDemodulator(QSharedPointer<IDemodulator> dem) override { _demod = dem; }
     void setDSP(QSharedPointer<IDSP> dsp) override { _dsp = dsp; }
-    void setNetworkModule(QSharedPointer<INetworkWorker> net) override { _net = net; }
 
     void abortExec() override { _abort = true; }
-    void setTimeout(uint64_t msleep) override { _ms_sleep = msleep; }
+    void setTimeout(uint64_t) override {}
 public slots:
     void exec() override;
 };

@@ -3,11 +3,17 @@
 
 #include <stdint.h>
 #include <QString>
+#include <math.h>
 
 class Aircraft
 {
+    static constexpr char SIZE_TEXT = 9;
+    const uint32_t VALUE_LSB = 100;
+    const double LON_VALUE_LSB = 360.0 / pow(2, 31);
+    const double LAT_VALUE_LSB = 180.0 / pow(2, 31);
+
     uint32_t _icao;      /* ICAO address */
-    char _flight[9];     /* Flight number */
+    char _flight[SIZE_TEXT];     /* Flight number */
     float _altitude;       /* Altitude */
     float _speed;          /* Velocity computed from EW and NS components. */
     float _course;          /* Angle of flight. */
@@ -76,7 +82,7 @@ public:
     QString toString();
 
     QByteArray serialize();
-    bool serialize(QByteArray array);
+    bool unserialize(QByteArray array);
 };
 
 #endif // AIRCRAFT_H

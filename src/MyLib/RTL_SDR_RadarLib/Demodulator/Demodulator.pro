@@ -30,6 +30,7 @@ HEADERS += \
         ../../../include/IDemodulator.h \
         Aircraft.h \
         Demodulator.h \
+        StructAircraft.h \
         demodulator_global.h 
 
 unix {

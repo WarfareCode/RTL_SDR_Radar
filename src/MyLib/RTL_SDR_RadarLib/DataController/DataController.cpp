@@ -1,33 +1,39 @@
 #include "DataController.h"
 
+//#include "DataWorker.h"
+#include "DataWorkerNetSender.h"
+
 DataController::DataController(QSharedPointer<IReciverDevice> dev,
-                               QSharedPointer<IDemodulator> dem)
+                               QSharedPointer<IDemodulator> dem,
+                               TYPE_WORKER typeWorker)
 {
     qDebug()<<"create DataController";
     _dataThread = new QThread();
+    switch (typeWorker)
+    {
+        case TYPE_WORKER::DATA_STREAM :
+            _worker = std::unique_ptr<IWorker>(new DataWorker(dev,dem));
+            break;
 
-    _worker = std::unique_ptr<IWorker>(new DataWorker(dev,dem));
+        case TYPE_WORKER::DATA_TO_NETWORK :
+            _worker = std::unique_ptr<IWorker>(new DataWorkerNetSender(dev,dem));
+            break;
+    }
 
-    _worker->moveToThread(_dataThread);
+    if(_worker)
+    {
+        _worker->moveToThread(_dataThread);
 
-    QObject::connect(_dataThread,
-                     &QThread::started,
-                     _worker.get(),
-                     &IWorker::exec);
+        QObject::connect(_dataThread,
+                         &QThread::started,
+                         _worker.get(),
+                         &IWorker::exec);
 
-    QObject::connect(_worker.get(),
-                     &IWorker::finished,
-                     _dataThread,
-                     &QThread::quit);
-    //    QObject::connect(_worker.get(),
-    //                     &IWorker::finished,
-    //                     _worker.get(),
-    //                     &IWorker::deleteLater);
-
-    //    QObject::connect(_dataThread,
-    //                     &QThread::finished,
-    //                     _dataThread,
-    //                     &QThread::deleteLater);
+        QObject::connect(_worker.get(),
+                         &IWorker::finished,
+                         _dataThread,
+                         &QThread::quit);
+    }
 }
 
 DataController::~DataController()
@@ -40,17 +46,12 @@ DataController::~DataController()
     qDebug()<<"delete DataController";
 }
 
-uint8_t *DataController::getDataToChart()
-{
-    //qDebug()<<"DataController::getDataToChart() thread id ="<<QThread::currentThreadId();
-    //_worker->getData();
-    return nullptr;
-}
 
 void DataController::run()
 {
     if(_dataThread && _worker)
         _dataThread->start();
+
 }
 
 void DataController::stop()
@@ -90,10 +91,4 @@ void DataController::setDSP(QSharedPointer<IDSP> dsp)
 {
     if(_worker != nullptr)
         _worker->setDSP(dsp);
-}
-
-void DataController::setNetworkModule(QSharedPointer<INetworkWorker> net)
-{
-    if(_worker != nullptr)
-        _worker->setNetworkModule(net);
 }

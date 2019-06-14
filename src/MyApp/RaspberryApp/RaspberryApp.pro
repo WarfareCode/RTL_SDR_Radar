@@ -44,14 +44,12 @@ LIBS += -lLogger \
 SOURCES += \
     ../../include/widget/led/led.cpp \
         main.cpp \
-    network/NetworkWorker.cpp \
     ui/Mainwindow.cpp \
     core/Core.cpp
 
 HEADERS += \
     ../../include/INetworkWorker.h \
     ../../include/widget/led/led.h \
-    network/NetworkWorker.h \
     ui/Mainwindow.h \
     core/Core.h
 

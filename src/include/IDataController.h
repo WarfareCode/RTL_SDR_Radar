@@ -11,6 +11,12 @@
 #include "dsp/IDSP.h"
 #include "INetworkWorker.h"
 
+enum class  TYPE_WORKER
+{
+    DATA_STREAM = 0,
+    DATA_TO_NETWORK
+};
+
 class IDataController
 {
 public:
@@ -20,9 +26,6 @@ public:
     virtual void setReciverDevice(QSharedPointer<IReciverDevice>) = 0;
     virtual void setDemodulator(QSharedPointer<IDemodulator>) = 0;
     virtual void setDSP(QSharedPointer<IDSP>) = 0;
-    virtual void setNetworkModule(QSharedPointer<INetworkWorker>) = 0;
-
-    virtual uint8_t* getDataToChart() = 0;
 
     virtual void run() = 0;
     virtual void stop() = 0;

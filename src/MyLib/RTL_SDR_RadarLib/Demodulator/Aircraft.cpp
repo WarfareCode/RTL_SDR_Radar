@@ -1,8 +1,10 @@
 #include <QDateTime>
 #include <QDataStream>
 #include <QByteArray>
+#include <QDebug>
 
 #include "Aircraft.h"
+#include "StructAircraft.h"
 
 Aircraft::Aircraft(uint32_t icao) : _icao(icao)
 {
@@ -17,7 +19,7 @@ Aircraft::Aircraft(uint32_t icao) : _icao(icao)
     _even_cprlon = 0;
     _even_cprtime = 0;
     _lat = -200.0;
-    _lon = -200.0;
+    _lon = -400.0;
     _seen = QDateTime::currentMSecsSinceEpoch();
     _messages = 0;
 }
@@ -27,7 +29,7 @@ void Aircraft::setFlightInfo(char *val)
     if(val == nullptr)
         return;
 
-     memcpy(_flight, val, sizeof(_flight));
+    memcpy(_flight, val, sizeof(_flight));
 }
 
 QString Aircraft::getFlightInfo() const
@@ -39,7 +41,7 @@ QString Aircraft::toString()
 {
     QString str;
     str.append( QString("+++++++++++++++++++++++++++++++++++++\n"));
-    str.append( QString("ICAO: %1\n").arg(_icao));
+    str.append( QString("ICAO: %1\n").arg(_icao,6,16));
     str.append( QString("Flight number: %1\n").arg(QString(_flight)));
     str.append( QString("Altitude: %1\n").arg(_altitude));
     str.append( QString("Speed: %1\n").arg(_speed));
@@ -57,21 +59,28 @@ QString Aircraft::toString()
 QByteArray Aircraft::serialize()
 {
     QByteArray array;
-    QDataStream out(&array,QIODevice::WriteOnly);
-    out.setByteOrder(QDataStream::LittleEndian);
-    out << _icao;
-    out << QString(_flight);
-    out << _altitude;
-    out << _speed;
-    out << _course;
-    out << qint64(_seen);
-    out << quint64(_messages);
-    out << _lon;
-    out << _lat;
+    array.resize(sizeof (StructAircraft));
+
+    StructAircraft a;
+    a.icao = _icao;
+
+    memset((char*)a.flight,0,sizeof (a.flight));
+    memcpy((char*)a.flight, (char*)_flight, sizeof(a.flight));
+
+    a.altitude = uint32_t(_altitude * VALUE_LSB);
+    a.speed = uint32_t(_speed * VALUE_LSB);
+    a.course = uint32_t(_course * VALUE_LSB);
+    a.lon = int32_t(_lon / LON_VALUE_LSB);
+    a.lat = int32_t(_lat / LAT_VALUE_LSB);
+    a.seen = _seen;
+    a.messages = _messages;
+
+    memcpy(array.data(),(char*)&a,sizeof (StructAircraft));
+
     return  array;
 }
 
-bool Aircraft::serialize(QByteArray array)
+bool Aircraft::unserialize(QByteArray array)
 {
     Q_UNUSED(array);
     return false;

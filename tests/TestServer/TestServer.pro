@@ -28,6 +28,7 @@ SOURCES += \
         mainwindow.cpp
 
 HEADERS += \
+        ../../src/MyLib/RTL_SDR_RadarLib/Demodulator/StructAircraft.h \
         mainwindow.h
 
 FORMS += \

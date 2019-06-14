@@ -135,6 +135,7 @@ QByteArray Demodulator::getRawDump()
     for(auto &a: _hashAircrafts.values())
     {
         array.append(a->serialize());
+        qDebug()<< a->toString();
     }
     return array;
 }
