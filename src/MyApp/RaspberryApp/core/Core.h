@@ -25,10 +25,6 @@ class Core : public QObject
     QSharedPointer<IReciverDevice> _device = nullptr;
     QSharedPointer<IDemodulator> _demodulator = nullptr;
     QSharedPointer<ILogger> _logger = nullptr;
-    QSharedPointer<INetworkWorker> _network = nullptr;
-
-    const QString DEFAULT_IP = QString("127.0.0.1");
-    uint16_t DEFAULT_PORT = 62000;
 
 public:
     explicit Core(QObject *parent = nullptr);

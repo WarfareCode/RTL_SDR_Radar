@@ -9,7 +9,6 @@
 #include "../MyLib/RTL_SDR_RadarLib/DataController/DataController.h"
 #include "../MyLib/RTL_SDR_RadarLib/RTL_SDR_Reciver/RTL_SDR_Reciver.h"
 #include "../MyLib/RTL_SDR_RadarLib/Demodulator/Demodulator.h"
-#include "network/NetworkWorker.h"
 
 Core::Core(QObject *parent) : QObject(parent)
 {
@@ -40,8 +39,8 @@ Core::~Core()
     _device.clear();
     _logger.clear();
 
-    _network->disconnect();
-    _network.clear();
+//    _network->disconnect();
+//    _network.clear();
 }
 
 void Core::init()
@@ -53,13 +52,12 @@ void Core::init()
     _device->setLogger(_logger);
 
     _demodulator = QSharedPointer<IDemodulator>(new Demodulator(nullptr));
-
-    _network = QSharedPointer<INetworkWorker>(new NetworkWorker(DEFAULT_IP,
-                                                                DEFAULT_PORT));
+    _demodulator->setLogger(_logger);
 
     _dataController = QSharedPointer<IDataController>(new DataController(_device,
-                                                                         _demodulator));
-    _dataController->setNetworkModule(_network);
+                                                                         _demodulator,
+                                                                         TYPE_WORKER::DATA_TO_NETWORK));
+
 
     QObject::connect(&_timer,SIGNAL(timeout()),this,SLOT(slotTimeout()));
     _timer.start(1000);
@@ -72,9 +70,9 @@ void Core::slotTimeout()
         if(_device->openDevice())
             _dataController->run();
 
-        if(!_network->isConnected())
-            _network->connect(DEFAULT_IP,DEFAULT_PORT,100);
     }
+    _mainWindow.setOpenDevState((_device != nullptr) ? _device->isOpenDevice() : false);
+
 }
 
 

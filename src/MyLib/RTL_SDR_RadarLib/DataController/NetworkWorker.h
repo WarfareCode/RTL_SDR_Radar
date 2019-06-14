@@ -12,8 +12,7 @@ class NetworkWorker : public INetworkWorker
 
     ILogger* _log = nullptr;
     IPackageController* _pkgCtrl = nullptr;
-    std::unique_ptr<QTcpSocket> _socket;
-    bool _isConnected = false;
+    std::unique_ptr<QTcpSocket> _socket = nullptr;
 
     void addDebugMsg(const QString& str);
 public:
@@ -38,7 +37,7 @@ public:
      * \brief Проверка состояние подключения
      * \return есть подключение или нет
      */
-    bool isConnected() override {return _isConnected; }
+    bool isConnected() override;
 
     /*!
      * \brief отключение

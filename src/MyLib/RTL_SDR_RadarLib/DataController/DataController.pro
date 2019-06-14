@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += gui
+QT       += gui network
 
 TARGET = DataController
 TEMPLATE = lib
@@ -24,11 +24,15 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         DataController.cpp \
-    DataWorker.cpp
+    DataWorker.cpp \
+    DataWorkerNetSender.cpp \
+    NetworkWorker.cpp
 
 HEADERS += \
         ../../../include/INetworkWorker.h \
         DataController.h \
+        DataWorkerNetSender.h \
+        NetworkWorker.h \
         datacontroller_global.h \ 
     ../../../include/IDataController.h \
     ../../../include/IWorker.h \

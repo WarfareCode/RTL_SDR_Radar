@@ -32,4 +32,15 @@ bool Logger::isEmpty()
     return _stack.isEmpty();
 }
 
+int32_t Logger::size()
+{
+    return _size;
+}
+
+int32_t Logger::countMsg()
+{
+    QMutexLocker locker(&_mutex);
+    return _stack.size();
+}
+
 

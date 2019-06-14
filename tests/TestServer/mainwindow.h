@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QTcpServer>
 #include <QTcpSocket>
+#include <math.h>
 
 namespace Ui {
 class MainWindow;
@@ -19,7 +20,9 @@ public:
 
 private:
     Ui::MainWindow *ui;
-
+    const uint32_t VALUE_LSB = 100;
+    const double LON_VALUE_LSB = 360.0 / pow(2, 31);
+    const double LAT_VALUE_LSB = 180.0 / pow(2, 31);
 
 public slots:
     void acceptConnection();
@@ -31,7 +34,7 @@ private:
     QTcpSocket *tcpServerConnection;
     int bytesToWrite;
     int bytesWritten;
-    int bytesReceived;
+    int bytesReceived = 0;
 };
 
 #endif // MAINWINDOW_H

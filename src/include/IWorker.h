@@ -21,7 +21,6 @@ public:
     virtual void setReciverDevice(QSharedPointer<IReciverDevice>) = 0;
     virtual void setDemodulator(QSharedPointer<IDemodulator>) = 0;
     virtual void setDSP(QSharedPointer<IDSP>) = 0;
-    virtual void setNetworkModule(QSharedPointer<INetworkWorker>) = 0;
     virtual void abortExec() = 0;
     virtual void setTimeout(uint64_t msleep) = 0;
 public slots:

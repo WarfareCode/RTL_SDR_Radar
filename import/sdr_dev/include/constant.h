@@ -36,8 +36,10 @@ const uint8_t MODES_DEBUG_NOPREAMBLE    = (1<<4);
  * at least greater than a given level for us to dump the signal. */
 const uint16_t MODES_DEBUG_NOPREAMBLE_LEVEL  = 25;
 
-const uint16_t MODES_INTERACTIVE_ROWS   = 15;   /* Rows on screen */
-const uint16_t MODES_INTERACTIVE_TTL    = 6000;  /* TTL before being removed in ms*/
+const int64_t MODES_INTERACTIVE_TTL    = 60000;  /* TTL before being removed in ms*/
 
+const float CONVERT_FT_TO_METERS = 3.2808f;
+//узлы в километры в час
+const float CONVERT_KN_TO_KM_P_H = 1.852f;
 #endif // CONST_H
 

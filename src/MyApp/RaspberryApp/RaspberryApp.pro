@@ -42,14 +42,14 @@ LIBS += -lLogger \
         -lDemodulator
 
 SOURCES += \
+    ../../include/widget/led/led.cpp \
         main.cpp \
-    network/NetworkWorker.cpp \
     ui/Mainwindow.cpp \
     core/Core.cpp
 
 HEADERS += \
     ../../include/INetworkWorker.h \
-    network/NetworkWorker.h \
+    ../../include/widget/led/led.h \
     ui/Mainwindow.h \
     core/Core.h
 
