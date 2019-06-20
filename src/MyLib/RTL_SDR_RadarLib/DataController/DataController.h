@@ -2,29 +2,32 @@
 #define DATACONTROLLER_H
 
 #include <QThread>
+#include <memory>
 
 #include "datacontroller_global.h"
-#include "../../../include/IDataController.h"
-#include "../../../include/IPoolObject.h"
-
-#include "DataWorker.h"
-#include "DataWorkerImit.h"
+#include "IDataController.h"
+#include "IPoolObject.h"
+#include "IWorker.h"
 
 class DATACONTROLLERSHARED_EXPORT DataController : public IDataController
 {
-    IWorker* _worker = nullptr;
+    std::unique_ptr<IWorker> _worker = nullptr;
     QThread* _dataThread = nullptr;
 
 public:
     explicit DataController(QSharedPointer<IReciverDevice> dev,
-                            QSharedPointer<IDemodulator> dem);
+                            QSharedPointer<IDemodulator> dem,
+                            TYPE_WORKER typeWorker = TYPE_WORKER::DATA_STREAM);
     ~DataController() override;
-
-    uint8_t* getDataToChart() override;
 
     void run() override;
     void stop() override;
     bool isRunning() override;
+
+    void setLogger(ILogger* log) override;
+    void setReciverDevice(QSharedPointer<IReciverDevice> dev) override;
+    void setDemodulator(QSharedPointer<IDemodulator> dem) override;
+    void setDSP(QSharedPointer<IDSP> dsp) override;
 };
 
 #endif // DATACONTROLLER_H

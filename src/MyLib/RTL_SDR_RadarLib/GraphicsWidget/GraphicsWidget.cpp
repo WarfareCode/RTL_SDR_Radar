@@ -11,7 +11,6 @@ GraphicsWidget::GraphicsWidget(double w,
     _pxmMap(static_cast<int>(_widthWidget),static_cast<int>(_widthWidget))
 {
     subscribe(poolObject);
-//    qDebug()<<"create GraphicsWidget" << QThread::currentThreadId();
 
     initWidget(QRect(0,
                      0,
@@ -22,8 +21,7 @@ GraphicsWidget::GraphicsWidget(double w,
 
     //обновление сектора
     connect(&_timer,SIGNAL(timeout()),this,SLOT(timeout()));
-    _timer.start(25);
-
+    _timer.start(10);
     QObject::connect(this,
                      SIGNAL(signalUpdateData()),
                      this,
@@ -210,7 +208,6 @@ void GraphicsWidget::updateObjectOnScene(QSharedPointer<IObject> &object)
 
     QPointF dot = {-10.0,-10.0};
 
-
     if(object->getDistance_KM() < (_ptrMapController->getDistanceRadarScale_KM()))
     {
         dot = _ptrMapController->geoToScreenCoordinates(object->getGeoCoord());
@@ -323,7 +320,7 @@ void GraphicsWidget::drawBackground(QPainter *painter, const QRectF &rect)
 {
     Q_UNUSED(rect);
 
-    //!!!!!!!!сюда впендюрить отрисовку карты
+    //!!!!!!!!сюда вставить отрисовку карты
     //!
 
     painter->setRenderHint(QPainter::Antialiasing);

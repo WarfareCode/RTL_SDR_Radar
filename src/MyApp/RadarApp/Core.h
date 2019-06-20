@@ -23,7 +23,9 @@ class Core : public QObject
 {
     Q_OBJECT
     QTimer _timer;
-    MainWindow _mainWindow;
+
+    MainWindow* _mainWindow = nullptr;
+
 
     QSharedPointer<IPoolObject> _poolObjects = nullptr;
     IDataController* _dataController = nullptr;

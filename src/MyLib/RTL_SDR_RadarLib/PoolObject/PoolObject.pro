@@ -13,7 +13,9 @@ DEFINES += POOLOBJECT_LIBRARY
 
 SOURCES += PoolObject.cpp \
     GraphicsObject.cpp \
-    AirObject.cpp
+    AirObject.cpp \
+    ../../../include/coord/Position.cpp \
+    ../../../include/coord/Conversions.cpp
 
 HEADERS += PoolObject.h\
         poolobject_global.h \
@@ -21,7 +23,9 @@ HEADERS += PoolObject.h\
     ../../../include/ILogger.h \
     ../../../include/IPoolObject.h \
     GraphicsObject.h \
-    AirObject.h
+    AirObject.h \
+    ../../../include/coord/Position.h \
+    ../../../include/coord/Conversions.h
 
 unix {
     target.path = /usr/lib

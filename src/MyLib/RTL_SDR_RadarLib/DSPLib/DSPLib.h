@@ -1,11 +1,12 @@
 #ifndef DSPLIB_H
 #define DSPLIB_H
 
+#include <QRunnable>
+#include <fftw3.h>
 #include "dsplib_global.h"
 #include "dsp/IDSP.h"
-#include <fftw3.h>
 
-class DSPLIBSHARED_EXPORT DSPLib: public IDSP
+class DSPLIBSHARED_EXPORT DSPLib: public IDSP, public QRunnable
 {
     std::complex<float> *inbuf, *outbuf;
     fftw_plan plan;
@@ -17,6 +18,7 @@ public:
     SrcDataAdc makeFFT(const QVector<uint8_t>& vector) override;
     SrcDataAdc makeMagnitude(const QVector<uint8_t>& vector) override;
     SrcDataAdc makeAll(const QVector<uint8_t>& vector)override;
+    void run() override;
 };
 
 #endif // DSPLIB_H

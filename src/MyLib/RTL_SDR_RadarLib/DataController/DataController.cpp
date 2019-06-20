@@ -1,50 +1,50 @@
 #include "DataController.h"
 
+//#include "DataWorker.h"
+#include "DataWorkerNetSender.h"
+
 DataController::DataController(QSharedPointer<IReciverDevice> dev,
-                               QSharedPointer<IDemodulator> dem)
+                               QSharedPointer<IDemodulator> dem,
+                               TYPE_WORKER typeWorker)
 {
+    qDebug()<<"create DataController";
     _dataThread = new QThread();
+    switch (typeWorker)
+    {
+        case TYPE_WORKER::DATA_STREAM :
+            _worker = std::unique_ptr<IWorker>(new DataWorker(dev,dem));
+            break;
 
-    if(dev)
-        _worker = new DataWorker(dev,dem);
-    else
-        _worker = new DataWorkerImit();
+        case TYPE_WORKER::DATA_TO_NETWORK :
+            _worker = std::unique_ptr<IWorker>(new DataWorkerNetSender(dev,dem));
+            break;
+    }
 
-    _worker->moveToThread(_dataThread);
+    if(_worker)
+    {
+        _worker->moveToThread(_dataThread);
 
-    QObject::connect(_dataThread,
-                     &QThread::started,
-                     _worker,
-                     &IWorker::exec);
+        QObject::connect(_dataThread,
+                         &QThread::started,
+                         _worker.get(),
+                         &IWorker::exec);
 
-    QObject::connect(_worker,
-                     &IWorker::finished,
-                     _dataThread,
-                     &QThread::quit);
-
-    QObject::connect(_worker,
-                     &IWorker::finished,
-                     _worker,
-                     &IWorker::deleteLater);
-
-    QObject::connect(_dataThread,
-                     &QThread::finished,
-                     _dataThread,
-                     &QThread::deleteLater);
+        QObject::connect(_worker.get(),
+                         &IWorker::finished,
+                         _dataThread,
+                         &QThread::quit);
+    }
 }
 
 DataController::~DataController()
 {
     if(_dataThread->isRunning())
         _worker->abortExec();
+    _dataThread->wait();
+    _worker.reset();
+    qDebug()<<"delete DataController";
 }
 
-uint8_t *DataController::getDataToChart()
-{
-    //qDebug()<<"DataController::getDataToChart() thread id ="<<QThread::currentThreadId();
-    _worker->getData();
-    return nullptr;
-}
 
 void DataController::run()
 {
@@ -66,4 +66,28 @@ void DataController::stop()
 bool DataController::isRunning()
 {
     return _dataThread->isRunning();
+}
+
+void DataController::setLogger(ILogger *log)
+{
+    if(_worker != nullptr)
+        _worker->setLogger(log);
+}
+
+void DataController::setReciverDevice(QSharedPointer<IReciverDevice> dev)
+{
+    if(_worker != nullptr)
+        _worker->setReciverDevice(dev);
+}
+
+void DataController::setDemodulator(QSharedPointer<IDemodulator> dem)
+{
+    if(_worker != nullptr)
+        _worker->setDemodulator(dem);
+}
+
+void DataController::setDSP(QSharedPointer<IDSP> dsp)
+{
+    if(_worker != nullptr)
+        _worker->setDSP(dsp);
 }

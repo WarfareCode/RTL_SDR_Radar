@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += gui
+QT       += gui network
 
 TARGET = DataController
 TEMPLATE = lib
@@ -25,19 +25,22 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
         DataController.cpp \
     DataWorker.cpp \
-    DataWorkerImit.cpp
+    DataWorkerNetSender.cpp \
+    NetworkWorker.cpp
 
 HEADERS += \
+        ../../../include/INetworkWorker.h \
         DataController.h \
+        DataWorkerNetSender.h \
+        NetworkWorker.h \
         datacontroller_global.h \ 
-    ../../../include/IDataController.h \
-    ../../../include/IWorker.h \
-    ../../../include/IDemodulator.h \
-    DataWorker.h \
-    DataWorkerImit.h \
-    ../../../include/dsp/SrcDataAdc.h \
-    ../../../include/IDataFIFO.h \
-    ../../../include/dsp/IDSP.h
+        ../../../include/IDataController.h \
+        ../../../include/IWorker.h \
+        ../../../include/IDemodulator.h \
+        DataWorker.h \
+        ../../../include/dsp/SrcDataAdc.h \
+        ../../../include/IDataFIFO.h \
+        ../../../include/dsp/IDSP.h
 
 unix {
     target.path = /usr/lib

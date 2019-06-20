@@ -1,13 +1,13 @@
 TEMPLATE = subdirs
 
 SUBDIRS += \
+    Logger \
     Demodulator \
     Subject \
     Carrier \
     MapLib \
     PoolObject \
     GraphicsWidget \
-    Logger \
     RTL_SDR_Reciver \
     DataController \
     DSPLib

@@ -20,6 +20,7 @@ public:
 private:
     Ui::MainWindow *ui;
     GraphicsWidget* _graphicsWidget = nullptr;
+
 };
 
 #endif // MAINWINDOW_H

@@ -1,14 +1,14 @@
 #-------------------------------------------------
 #
-# Project created by QtCreator 2018-11-09T14:46:34
+# Project created by QtCreator 2019-05-23T22:49:49
 #
 #-------------------------------------------------
 
-QT       += core gui charts
+QT       += core gui network
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-TARGET = TestReciver
+TARGET = RaspberryApp
 TEMPLATE = app
 
 # The following define makes your compiler emit warnings if you use
@@ -22,26 +22,36 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
-LIBS += -lfftw3
-
-SOURCES += \
-        main.cpp \
-        mainwindow.cpp
-
-HEADERS += \
-        mainwindow.h
-
-FORMS += \
-        mainwindow.ui
+CONFIG += c++11
 
 include( ../../../common.pri )
 include( ../../../app.pri )
 
+RESOURCES += \
+    ../../../import/res.qrc
+
+DISTFILES += \
+    ../../../import/style.qss
+
 LIBS += -lLogger \
         -lPoolObject \
         -lSubject \
-        -lGraphicsWidget \
         -lCarrier \
-        -lMapLib \
         -lDataController \
-        -lRTL_SDR_Reciver
+        -lRTL_SDR_Reciver \
+        -lDemodulator
+
+SOURCES += \
+    ../../include/widget/led/led.cpp \
+        main.cpp \
+    ui/Mainwindow.cpp \
+    core/Core.cpp
+
+HEADERS += \
+    ../../include/INetworkWorker.h \
+    ../../include/widget/led/led.h \
+    ui/Mainwindow.h \
+    core/Core.h
+
+FORMS += \
+    ui/Mainwindow.ui

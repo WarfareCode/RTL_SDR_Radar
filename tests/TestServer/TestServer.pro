@@ -1,15 +1,15 @@
 #-------------------------------------------------
 #
-# Project created by QtCreator 2019-05-07T21:15:12
+# Project created by QtCreator 2019-06-07T00:03:15
 #
 #-------------------------------------------------
 
-QT       -= gui
+QT       += core gui network
 
-TARGET = Demodulator
-TEMPLATE = lib
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-DEFINES += DEMODULATOR_LIBRARY
+TARGET = TestServer
+TEMPLATE = app
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which has been marked as deprecated (the exact warnings
@@ -22,21 +22,18 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
+LIBS += -lfftw3
+
 SOURCES += \
-        Aircraft.cpp \
-        Demodulator.cpp
+        main.cpp \
+        mainwindow.cpp
 
 HEADERS += \
-        ../../../include/IDemodulator.h \
-        Aircraft.h \
-        Demodulator.h \
-        StructAircraft.h \
-        demodulator_global.h 
+        ../../src/MyLib/RTL_SDR_RadarLib/Demodulator/StructAircraft.h \
+        mainwindow.h
 
-unix {
-    target.path = /usr/lib
-    INSTALLS += target
-}
+FORMS += \
+        mainwindow.ui
 
-include( ../../../../common.pri )
-include( ../../../../lib.pri )
+QMAKE_CXXFLAGS += -std=c++11
+CONFIG += c++11

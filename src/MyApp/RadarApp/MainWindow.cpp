@@ -13,6 +13,8 @@ MainWindow::MainWindow(QWidget *parent) :
                                          QSharedPointer<IPoolObject>(),
                                          this);
     ui->vrlRadar->addWidget(_graphicsWidget);
+    ui->teTerminal->setTextColor(QColor(0,180,0));
+    ui->teTerminal->insertPlainText("test....");
 }
 
 MainWindow::~MainWindow()
