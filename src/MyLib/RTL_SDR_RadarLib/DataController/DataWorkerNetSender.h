@@ -2,6 +2,7 @@
 #define DATAWORKERNET_H
 
 #include "DataWorker.h"
+#include <memory>
 
 class DataWorkerNetSender : public DataWorker
 {
